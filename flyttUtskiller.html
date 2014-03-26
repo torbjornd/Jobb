@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flytt utskiller</title>
+	<link rel="stylesheet" href="http://js.arcgis.com/3.8/js/esri/css/esri.css"/>
+	<script src="http://js.arcgis.com/3.8/"></script>
+    <script>
+	  require(["esri/map", "esri/symbols/SimpleMarkerSymbol", "esri/geometry/Point", "esri/graphic", "esri/toolbars/edit", "dojo/_base/event", "dojo/_base/Color", "dojo/on", "dojo/domReady!"], function(Map, SimpleMarkerSymbol, Point, Graphic, Edit, event, Color, on) {
+		var map, editToolbar;
+		map = new Map("kart", {
+			center: [-56.049, 38.485],
+			zoom: 3,
+			basemap: "streets"
+		});
+		map.on("load", addGraphic);
+		
+		// legger til punktgrafikk som viser utskiller
+		function addGraphic(evt){
+			var symbol = new SimpleMarkerSymbol();
+			symbol.setColor(new Color("#000000"));
+			symbol.setSize(20);
+			var punkt = new Point({
+				latitude: 38,
+				longitude: -56
+			});
+			var g = new Graphic(punkt, symbol);
+			
+			map.graphics.add(g);
+			
+			// aktiver flytting av grafikk
+			map.graphics.on("click", function(evt){
+				console.log("trykket på grafikk");
+				event.stop(evt);
+				editToolbar = new Edit(map);
+				moveGraphic(g);
+			});
+			
+			// deaktiver flytting av grafikk
+			map.on("click", function(evt){
+				editToolbar.deactivate();
+			});
+			
+		}
+		
+		// flytter punktgrafikken
+		function moveGraphic(graphic){
+			var tool = 0;
+			tool = tool | Edit.MOVE;
+			editToolbar.activate(tool, graphic);
+		}
+		
+		// henter parameter fra URL
+		function findParameters(){
+			var searchString = window.location.search.substring(1);
+			var variableArray = searchString.split('&');
+			for(var i = 0; i < variableArray.length; i++){
+				var keyValuePair = variableArray[i].split('=');
+				if(keyValuePair[0] == varSearch){
+					return keyValuePair[1];
+				}
+			}
+		}
+		
+	  });
+    </script>
+  </head>
+  <body>
+    <div id="kart"></div>
+  </body>
+</html>
