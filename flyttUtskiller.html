@@ -24,7 +24,7 @@
 		) {
 		var map, editToolbar;
 		map = new Map("kart", {
-			center: [10.731934, 59.925435],
+			center: [0,0],
 			zoom: 10,
 			basemap: "streets"
 		});
@@ -63,7 +63,8 @@
 			map.on("click", function(evt){
 				editToolbar.deactivate();
 				var g2 = this.graphics.graphics[1].geometry;
-				alert(g2.x);
+				parent.koordinater(g2.x, g2.y);
+				//alert("X: "+g2.x+"\nY: "+g2.y);
 			});
 		}
 		
@@ -124,7 +125,7 @@
 			var d18 = ((d9 - ((1 + 2 * d6 + d7) * Math.pow(d9,3))/6) + (((((5 - 2 * d7) + 28*d6) - 3 * d7 * d7) + 8 * d3 + 24 * d6 * d6) * Math.pow(d9,5))/120)/Math.cos(d14);
 			d18 = d11 + d18 * 180 / Math.PI;
 			return [d18,d17];
-		}
+		}		
 	  });
     </script>
   </head>
