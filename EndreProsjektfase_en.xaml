@@ -1,0 +1,744 @@
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="ActivityBuilder" mva:VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:eac="clr-namespace:ESRI.ArcGIS.Client;assembly=ESRI.ArcGIS.Client"
+ xmlns:eacg="clr-namespace:ESRI.ArcGIS.Client.Geometry;assembly=ESRI.ArcGIS.Client"
+ xmlns:eact="clr-namespace:ESRI.ArcGIS.Client.Tasks;assembly=ESRI.ArcGIS.Client"
+ xmlns:esri="http://schemas.esri.com/arcgis/client/2009"
+ xmlns:gce="clr-namespace:Geocortex.Core.Extensions;assembly=Geocortex.Core"
+ xmlns:gcx="http://apis.geocortex.com/2009"
+ xmlns:gfc="clr-namespace:Geocortex.Forms.Client;assembly=Geocortex.EssentialsWpfApi"
+ xmlns:gfci="clr-namespace:Geocortex.Forms.Client.Items;assembly=Geocortex.EssentialsWpfApi"
+ xmlns:gr="clr-namespace:Geocortex.Reporting;assembly=Geocortex.Reporting"
+ xmlns:gwa="clr-namespace:Geocortex.Workflow.Activities;assembly=Geocortex.Workflow"
+ xmlns:gwa1="clr-namespace:Geocortex.Workflow.Activities;assembly=Geocortex.Workflow.Activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=System.Core"
+ xmlns:s1="clr-namespace:System;assembly=System"
+ xmlns:s2="clr-namespace:System;assembly=mscorlib"
+ xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>ESRI.ArcGIS.Client</x:String>
+      <x:String>ESRI.ArcGIS.Client.Geometry</x:String>
+      <x:String>ESRI.ArcGIS.Client.Tasks</x:String>
+      <x:String>Geocortex.Core.Extensions</x:String>
+      <x:String>Geocortex.Workflow.Activities</x:String>
+      <x:String>Geocortex.Forms.Client</x:String>
+      <x:String>Geocortex.Forms.Client.Items</x:String>
+      <x:String>Geocortex.Reporting</x:String>
+      <x:String>System</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Windows</x:String>
+      <x:String>System.Windows.Threading</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>ESRI.ArcGIS.Client</AssemblyReference>
+      <AssemblyReference>Geocortex.Core</AssemblyReference>
+      <AssemblyReference>Geocortex.Workflow</AssemblyReference>
+      <AssemblyReference>Geocortex.EssentialsWpfApi</AssemblyReference>
+      <AssemblyReference>Geocortex.Reporting</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>Geocortex.Workflow.Activities</AssemblyReference>
+      <AssemblyReference>System.Reactive.Core</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Windows.Presentation</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="Retning" />
+      <Variable x:TypeArguments="x:String" Name="EksisterendeFase" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="FormResult" />
+      <Variable x:TypeArguments="x:String" Default="http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/0" Name="EksisterendeFaseURL" />
+      <Variable x:TypeArguments="x:String" Name="nesteFase" />
+      <Variable x:TypeArguments="x:String" Name="nesteFaseURL" />
+      <Variable x:TypeArguments="esri:FeatureSet" Name="FSPolygon" />
+      <Variable x:TypeArguments="esri:Geometry" Name="mapPoint" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="FormResult2" />
+    </Sequence.Variables>
+    <gwa1:Alert sap2010:WorkflowViewState.IdRef="Alert_1" Text="Trykk i kartet for å velge prosjektet som skal flyttes til neste fase." Title="Velg prosjekt" />
+    <gwa1:CaptureGeometry CaptureType="[Geocortex.Workflow.Activities.GeometryCaptureType.MapPoint]" DisplayName="Hent musklikk" sap2010:WorkflowViewState.IdRef="CaptureGeometry_1" Result="[mapPoint]" />
+    <gwa1:DisplayForm ButtonResultValue="[Retning]" FormDefinition="&lt;FormDefinition xmlns=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client&quot; xmlns:i=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&lt;ContainerFormItem xmlns:a=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items&quot;&gt;&lt;a:ArgumentName/&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID&gt;Group1&lt;/a:ItemID&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:Description/&gt;&lt;a:FormItems&gt;&lt;a:FormItem i:type=&quot;a:ComboBoxFormItem&quot;&gt;&lt;a:ArgumentName&gt;Fase&lt;/a:ArgumentName&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID&gt;ComboBox1&lt;/a:ItemID&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:DataItems&gt;&lt;DataItem&gt;&lt;Display&gt;Konseptvalgutredning&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Konseptvalgutredning&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Utredning&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Utredning&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;KS1&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;KS1&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Forprosjekt&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Forprosjekt&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;KS2&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;KS2&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Detaljprosjekt&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Detaljprosjekt&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Anskaffelse&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Anskaffelse&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Anleggsutførelse&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Anleggsutførelse&lt;/Value&gt;&lt;/DataItem&gt;&lt;DataItem&gt;&lt;Display&gt;Sluttrapportering&lt;/Display&gt;&lt;TypeName&gt;System.String&lt;/TypeName&gt;&lt;Value i:type=&quot;b:string&quot; xmlns:b=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;Sluttrapportering&lt;/Value&gt;&lt;/DataItem&gt;&lt;/a:DataItems&gt;&lt;a:FilterByInputGeometry&gt;false&lt;/a:FilterByInputGeometry&gt;&lt;a:Label&gt;&lt;a:ArgumentName/&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID/&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:LabelForItemID&gt;ComboBox1&lt;/a:LabelForItemID&gt;&lt;a:Text&gt;Velg nåværende fase&lt;/a:Text&gt;&lt;/a:Label&gt;&lt;a:LayerSourceJson i:nil=&quot;true&quot;/&gt;&lt;a:ProxyUrl/&gt;&lt;a:QueryCascadingID/&gt;&lt;a:QueryDisplayOutputField/&gt;&lt;a:QueryServiceUrl/&gt;&lt;a:QueryValueOutputField/&gt;&lt;a:QueryWhereClause/&gt;&lt;a:SelectText/&gt;&lt;a:SelectedValue i:nil=&quot;true&quot;/&gt;&lt;a:Token/&gt;&lt;/a:FormItem&gt;&lt;/a:FormItems&gt;&lt;a:MaxWidth&gt;INF&lt;/a:MaxWidth&gt;&lt;a:Orientation&gt;Vertical&lt;/a:Orientation&gt;&lt;/ContainerFormItem&gt;&lt;KnownTypes xmlns:a=&quot;http://schemas.microsoft.com/2003/10/Serialization/Arrays&quot;&gt;&lt;a:string&gt;Geocortex.Forms.Client.Items.ContainerFormItem&lt;/a:string&gt;&lt;a:string&gt;Geocortex.Forms.Client.Items.ComboBoxFormItem&lt;/a:string&gt;&lt;/KnownTypes&gt;&lt;MaxHeight&gt;800&lt;/MaxHeight&gt;&lt;MaxWidth&gt;1000&lt;/MaxWidth&gt;&lt;Title&gt;Overfør til ny fase&lt;/Title&gt;&lt;Version&gt;1.1&lt;/Version&gt;&lt;/FormDefinition&gt;" FormResults="[FormResult]" sap2010:WorkflowViewState.IdRef="DisplayForm_1">
+      <gwa1:DisplayForm.Body>
+        <ActivityAction x:TypeArguments="gcx:FormDefinition">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="gcx:FormDefinition" Name="form" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="RuntimeModifications" sap2010:WorkflowViewState.IdRef="Sequence_1" />
+        </ActivityAction>
+      </gwa1:DisplayForm.Body>
+      <gwa1:DisplayForm.Buttons>
+        <gcx:FormButton CausesValidation="False" IsDefault="False" Label="Flytt tilbake" Value="tilbake" />
+        <gcx:FormButton CausesValidation="False" IsDefault="True" Label="Flytt til neste" Value="neste" />
+      </gwa1:DisplayForm.Buttons>
+      <gwa1:DisplayForm.FormInArguments>
+        <gwa:ArgumentWrapper x:TypeArguments="InArgument(scg:IEnumerable(gcx:DataItem))" IsRequired="False" Name="ComboBox1">
+          <gwa:ArgumentWrapper.Argument>
+            <InArgument x:TypeArguments="scg:IEnumerable(gcx:DataItem)" />
+          </gwa:ArgumentWrapper.Argument>
+        </gwa:ArgumentWrapper>
+      </gwa1:DisplayForm.FormInArguments>
+      <gwa1:DisplayForm.FormOutArguments>
+        <gwa:ArgumentWrapper x:TypeArguments="OutArgument" IsRequired="False" Name="Fase">
+          <gwa:ArgumentWrapper.Argument>
+            <OutArgument x:TypeArguments="x:Object" />
+          </gwa:ArgumentWrapper.Argument>
+        </gwa:ArgumentWrapper>
+      </gwa1:DisplayForm.FormOutArguments>
+    </gwa1:DisplayForm>
+    <ForEach x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" DisplayName="Finn valgt fase fra dialogboksen" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[FormResult]">
+      <ActivityAction x:TypeArguments="scg:KeyValuePair(x:String, x:Object)">
+        <ActivityAction.Argument>
+          <DelegateInArgument x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Name="item" />
+        </ActivityAction.Argument>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Verdi er: &quot;+item.Value.toString()]" />
+          <If Condition="[(item.Key).equals(&quot;Fase&quot;)]" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[EksisterendeFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[item.Value.toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Then>
+          </If>
+        </Sequence>
+      </ActivityAction>
+    </ForEach>
+    <Switch x:TypeArguments="x:String" Expression="[EksisterendeFase]" sap2010:WorkflowViewState.IdRef="Switch`1_4">
+      <Assign x:Key="Konseptvalgutredning" sap2010:WorkflowViewState.IdRef="Assign_44">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[EksisterendeFaseURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/0</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign x:Key="Utredning" sap2010:WorkflowViewState.IdRef="Assign_45">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[EksisterendeFaseURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/1</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign x:Key="KS1" sap2010:WorkflowViewState.IdRef="Assign_46">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[EksisterendeFaseURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/2</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign x:Key="Forprosjekt" sap2010:WorkflowViewState.IdRef="Assign_47">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[EksisterendeFaseURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/3</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign x:Key="KS2" sap2010:WorkflowViewState.IdRef="Assign_48">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[EksisterendeFaseURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">http://arcgistest/arcgistest/rest/services/Diverse/NyProsjekt/FeatureServer/4</InArgument>
+        </Assign.Value>
+      </Assign>
+    </Switch>
+    <gwa1:QueryTask DisplayName="Hent geometrien til planen" Geometry="[mapPoint]" sap2010:WorkflowViewState.IdRef="QueryTask_1" OutFields="*" QueryServiceUrl="[EksisterendeFaseURL]" Results="[FSPolygon]" ReturnGeometry="True" />
+    <If Condition="[(Retning.equals(&quot;neste&quot;))]" DisplayName="Er retning frem eller tilbake" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_15">
+            <Switch x:TypeArguments="x:String" Expression="[EksisterendeFase]" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+              <Sequence x:Key="Konseptvalgutredning" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">KS1</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_21">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_22">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("KSUSLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="Utredning" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_6">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">KS1</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_23">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_24">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("UTREDNINGSLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="KS1" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_8">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">Forprosjekt</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_26">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("KS1SLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="Forprosjekt" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">KS2</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_27">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_28">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("FORPROSJEKTSLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="KS2" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_12">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">Detaljprosjekt</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_30">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("KS2SLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="Detaljprosjekt" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_14">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">Anskaffelse</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_31">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_32">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("DETALJPROSJEKTSLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="Anskaffelse" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_16">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">Anleggsutførelse</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_33">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_34">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("ANSKAFFELSESLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+              <Sequence x:Key="Anleggsutførelse" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[nesteFase]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">sluttRapportering</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_35">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[nesteFase]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_36">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("ANLEGGSUTFORELSESLUTTDATO")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[System.Datetime.Now().toString()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </Switch>
+            <gwa1:Alert sap2010:WorkflowViewState.IdRef="Alert_2" Text="[&quot;Neste fase: &quot;+NesteFase]" Title="Neste fase" />
+            <gwa1:UpdateFeatures FeatureLayerUrl="[EksisterendeFaseURL]" Features="[FSPolygon]" sap2010:WorkflowViewState.IdRef="UpdateFeatures_1" />
+          </Sequence>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_21">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="variable1" />
+            <Variable x:TypeArguments="scg:IList(gcx:DataItem)" Name="comboBoxItems" />
+            <Variable x:TypeArguments="gcx:DataItem" Name="d1" />
+          </Sequence.Variables>
+          <gwa1:CreateList x:TypeArguments="gcx:DataItem" sap2010:WorkflowViewState.IdRef="CreateList`1_1" Result="[comboBoxItems]" />
+          <Switch x:TypeArguments="x:String" Expression="[EksisterendeFase]" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+            <Sequence x:Key="KS1" sap2010:WorkflowViewState.IdRef="Sequence_22">
+              <gwa1:InsertIntoList x:TypeArguments="gcx:DataItem" Index="{x:Null}" sap2010:WorkflowViewState.IdRef="InsertIntoList`1_1" Item="[new DataItem(&quot;Konseptvalgutredning&quot;,&quot;Konseptvalgutredning&quot;)]" List="[comboboxItems]" />
+              <gwa1:InsertIntoList x:TypeArguments="gcx:DataItem" Index="{x:Null}" sap2010:WorkflowViewState.IdRef="InsertIntoList`1_2" Item="[new DataItem(&quot;Utredning&quot;,&quot;Utredning&quot;)]" List="[comboBoxItems]" />
+            </Sequence>
+            <Sequence x:Key="KS2" sap2010:WorkflowViewState.IdRef="Sequence_23">
+              <gwa1:InsertIntoList x:TypeArguments="gcx:DataItem" Index="{x:Null}" sap2010:WorkflowViewState.IdRef="InsertIntoList`1_3" Item="[new DataItem(&quot;Konseptvalgutredning&quot;,&quot;Konseptvalgutredning&quot;)]" List="[comboboxItems]" />
+              <gwa1:InsertIntoList x:TypeArguments="gcx:DataItem" Index="{x:Null}" sap2010:WorkflowViewState.IdRef="InsertIntoList`1_4" Item="[new DataItem(&quot;Utredning&quot;,&quot;Utredning&quot;)]" List="[comboboxItems]" />
+              <gwa1:InsertIntoList x:TypeArguments="gcx:DataItem" Index="{x:Null}" sap2010:WorkflowViewState.IdRef="InsertIntoList`1_5" Item="[new DataItem(&quot;Forprosjekt&quot;,&quot;Forprosjekt&quot;)]" List="[comboboxItems]" />
+            </Sequence>
+          </Switch>
+          <gwa1:DisplayForm DisplayName="Vis dialog for å gå tilbake" FormDefinition="&lt;FormDefinition xmlns=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client&quot; xmlns:i=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&lt;ContainerFormItem xmlns:a=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items&quot;&gt;&lt;a:ArgumentName/&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID&gt;Group1&lt;/a:ItemID&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:Description/&gt;&lt;a:FormItems&gt;&lt;a:FormItem i:type=&quot;a:ComboBoxFormItem&quot;&gt;&lt;a:ArgumentName/&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID&gt;ComboBox1&lt;/a:ItemID&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:DataItems/&gt;&lt;a:FilterByInputGeometry&gt;false&lt;/a:FilterByInputGeometry&gt;&lt;a:Label&gt;&lt;a:ArgumentName/&gt;&lt;a:IsVisible&gt;true&lt;/a:IsVisible&gt;&lt;a:ItemID/&gt;&lt;a:ToolTip/&gt;&lt;a:ValidationItems xmlns:b=&quot;http://schemas.datacontract.org/2004/07/Geocortex.Forms.Client.Items.Validation&quot;/&gt;&lt;a:LabelForItemID&gt;ComboBox1&lt;/a:LabelForItemID&gt;&lt;a:Text&gt;Label&lt;/a:Text&gt;&lt;/a:Label&gt;&lt;a:LayerSourceJson i:nil=&quot;true&quot;/&gt;&lt;a:ProxyUrl/&gt;&lt;a:QueryCascadingID/&gt;&lt;a:QueryDisplayOutputField/&gt;&lt;a:QueryServiceUrl/&gt;&lt;a:QueryValueOutputField/&gt;&lt;a:QueryWhereClause/&gt;&lt;a:SelectText/&gt;&lt;a:SelectedValue i:nil=&quot;true&quot;/&gt;&lt;a:Token/&gt;&lt;/a:FormItem&gt;&lt;/a:FormItems&gt;&lt;a:MaxWidth&gt;INF&lt;/a:MaxWidth&gt;&lt;a:Orientation&gt;Vertical&lt;/a:Orientation&gt;&lt;/ContainerFormItem&gt;&lt;KnownTypes xmlns:a=&quot;http://schemas.microsoft.com/2003/10/Serialization/Arrays&quot;&gt;&lt;a:string&gt;Geocortex.Forms.Client.Items.ContainerFormItem&lt;/a:string&gt;&lt;a:string&gt;Geocortex.Forms.Client.Items.ComboBoxFormItem&lt;/a:string&gt;&lt;/KnownTypes&gt;&lt;MaxHeight&gt;800&lt;/MaxHeight&gt;&lt;MaxWidth&gt;1000&lt;/MaxWidth&gt;&lt;Title&gt;Form Title&lt;/Title&gt;&lt;Version&gt;1.1&lt;/Version&gt;&lt;/FormDefinition&gt;" FormResults="[FormResult2]" sap2010:WorkflowViewState.IdRef="DisplayForm_2">
+            <gwa1:DisplayForm.Body>
+              <ActivityAction x:TypeArguments="gcx:FormDefinition">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="gcx:FormDefinition" Name="form" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="RuntimeModifications" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                  <Switch x:TypeArguments="x:String" Expression="[EksisterendeFase]" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+                    <Sequence x:Key="KS1" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="gcx:DataItem" Name="variable1" />
+                        <Variable x:TypeArguments="scg:IList(gcx:DataItem)" Name="DataItems" />
+                        <Variable x:TypeArguments="gcx:DataItem" Name="dI1" />
+                      </Sequence.Variables>
+                    </Sequence>
+                    <Sequence x:Key="KS2" sap2010:WorkflowViewState.IdRef="Sequence_18" />
+                  </Switch>
+                </Sequence>
+              </ActivityAction>
+            </gwa1:DisplayForm.Body>
+            <gwa1:DisplayForm.Buttons>
+              <gcx:FormButton CausesValidation="False" IsDefault="False" Label="Flytt tilbake" Value="Value" />
+            </gwa1:DisplayForm.Buttons>
+            <gwa1:DisplayForm.FormInArguments>
+              <gwa:ArgumentWrapper x:TypeArguments="InArgument(scg:IEnumerable(gcx:DataItem))" Argument="[comboBoxItems]" IsRequired="False" Name="ComboBox1" />
+            </gwa1:DisplayForm.FormInArguments>
+          </gwa1:DisplayForm>
+          <ForEach x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" DisplayName="Finn valgt fase fra dialogboksen" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[FormResult]">
+            <ActivityAction x:TypeArguments="scg:KeyValuePair(x:String, x:Object)">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Name="item" />
+              </ActivityAction.Argument>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_20">
+                <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_3" Text="[&quot;Verdi er: &quot;+item.Value.toString()]" />
+                <If Condition="[(item.Key).equals(&quot;Combobox1&quot;)]" sap2010:WorkflowViewState.IdRef="If_3">
+                  <If.Then>
+                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_19">
+                      <Assign sap2010:WorkflowViewState.IdRef="Assign_41">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:String">[NesteFase]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:String">[item.Value.toString()]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </Sequence>
+                  </If.Then>
+                </If>
+              </Sequence>
+            </ActivityAction>
+          </ForEach>
+          <Assign sap2010:WorkflowViewState.IdRef="Assign_42">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[FSPolygon.Features(0).Attributes("PLANSTATUS")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">[NesteFase]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <gwa1:UpdateFeatures FeatureLayerUrl="[EksisterendeFaseURL]" Features="[FSPolygon]" sap2010:WorkflowViewState.IdRef="UpdateFeatures_3" />
+        </Sequence>
+      </If.Else>
+    </If>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Alert_1" sap:VirtualizedContainerService.HintSize="872,82" />
+      <sap2010:ViewStateData Id="CaptureGeometry_1" sap:VirtualizedContainerService.HintSize="872,82" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="200,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="DisplayForm_1" sap:VirtualizedContainerService.HintSize="872,545" />
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="264,183">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,326" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="486,549">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="872,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_44" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_45" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_47" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_48" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Switch`1_4" sap:VirtualizedContainerService.HintSize="872,216" />
+      <sap2010:ViewStateData Id="QueryTask_1" sap:VirtualizedContainerService.HintSize="872,227" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_22" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_23" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_24" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_25" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_26" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_27" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_28" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_12" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_30" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_31" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_32" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="264,369">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_33" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_34" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="264,373">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_35" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Assign_36" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="264,373">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="308,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Alert_2" sap:VirtualizedContainerService.HintSize="308,82" />
+      <sap2010:ViewStateData Id="UpdateFeatures_1" sap:VirtualizedContainerService.HintSize="308,105" />
+      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="330,440">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="352,564">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateList`1_1" sap:VirtualizedContainerService.HintSize="473,59" />
+      <sap2010:ViewStateData Id="InsertIntoList`1_1" sap:VirtualizedContainerService.HintSize="217,105" />
+      <sap2010:ViewStateData Id="InsertIntoList`1_2" sap:VirtualizedContainerService.HintSize="217,105" />
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="239,374">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InsertIntoList`1_3" sap:VirtualizedContainerService.HintSize="217,105" />
+      <sap2010:ViewStateData Id="InsertIntoList`1_4" sap:VirtualizedContainerService.HintSize="217,105" />
+      <sap2010:ViewStateData Id="InsertIntoList`1_5" sap:VirtualizedContainerService.HintSize="217,105" />
+      <sap2010:ViewStateData Id="Sequence_23" sap:VirtualizedContainerService.HintSize="239,519">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Switch`1_3" sap:VirtualizedContainerService.HintSize="473,153" />
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="200,97">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="200,97">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Switch`1_2" sap:VirtualizedContainerService.HintSize="473,153">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="222,173">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="DisplayForm_2" sap:VirtualizedContainerService.HintSize="473,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="211,59" />
+      <sap2010:ViewStateData Id="Assign_41" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="264,183">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="211,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="200,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="473,49">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_42" sap:VirtualizedContainerService.HintSize="473,59" />
+      <sap2010:ViewStateData Id="UpdateFeatures_3" sap:VirtualizedContainerService.HintSize="473,105" />
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="495,798">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="872,941" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="894,2506">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="720,2195" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
