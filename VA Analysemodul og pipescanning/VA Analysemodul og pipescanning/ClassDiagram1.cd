@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="VA_Analysemodul.AnalyseModul_LogOn">
+    <Position X="3" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgAAAAAAAACkEAgAhBAIgAAAAAAAAAYAAAQCAAAEA=</HashCode>
+      <FileName>AnalyseModul_LogOn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.ArcGIS_Methods" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ArcGIS_Methods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.ThisAddIn" Collapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAQAAAAAAgAAAAgAAAAAQAAAAAAAABAAAABAAAEAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.ArcMap" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABCAAAAAAAAAAAAAAkAAAAACAEAAAAABAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.DesignDialogControl">
+    <Position X="6" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAECiIAhOAQADAEAAADAACCgAAAAoQAAiCgEA6AAAI=</HashCode>
+      <FileName>DesignDialogControl.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_analyse" />
+      <Field Name="_paalogging" />
+      <Field Name="_optionsView" />
+      <Field Name="_loginView" />
+      <Field Name="_editFieldQueryView" />
+      <Field Name="_modelInfoView" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.DesignDialogView">
+    <Position X="9" Y="7" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>///+9zctvHf26rvd37uN2/27v7///////b+///1z598=</HashCode>
+      <FileName>DesignDialogView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="rCtrlRelation1" />
+      <Field Name="rCtrlRelation2" />
+      <Field Name="rCtrlRelation3" />
+      <Field Name="rCtrlRelation4" />
+      <Field Name="rCtrlRelation5" />
+      <Field Name="rCtrlRelation6" />
+      <Field Name="rCtrlRelation7" />
+      <Field Name="rCtrlRelation8" />
+      <Field Name="_controller" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.EditFieldQueryController">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIACBIqAgAAAAAyBAAQAAAKEAAE2AKCgTAwIAEA=</HashCode>
+      <FileName>EditFieldQueryController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_analyse" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.EditFieldQueryView">
+    <Position X="9" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEUUBAZzLCRAEwIAyQWQB4MT0BPgVvlqpWdsCEWBHxA=</HashCode>
+      <FileName>EditFieldQueryView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_controller" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.LoginFormView" Collapsed="true">
+    <Position X="9" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIICAICAAAAAyAAAACAAAAABACAAACAAAAAAA=</HashCode>
+      <FileName>LoginFormView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.ModelInfoControl" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKwAAAAAAAAAAACAABAAABAAACCAAAAAAAA=</HashCode>
+      <FileName>ModelInfoControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.ModelInfoView">
+    <Position X="3" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABSAABCAACBAGBAAQACAQAACAAIBAgggBSIABAQAAAQ=</HashCode>
+      <FileName>ModelInfoView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_control" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.Modell" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIIIhBAQABDgQEEQQEhhQEA4EACAQBQACEIWFCiKEhQ=</HashCode>
+      <FileName>Modell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.OptionsController">
+    <Position X="9" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIEAAAAAAAAAAAAAAABAAAAACCAABAAAAA=</HashCode>
+      <FileName>OptionsController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_analyse" />
+      <Field Name="_view" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VA_Analysemodul.OptionsView" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAQAAyAAAAgAAACIAAACAAAAAACAAAABAGAAAQA=</HashCode>
+      <FileName>OptionsView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.RelationControl">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>+yGQAAARRuEQaESKBcKTQAWWAAAlqAAqkQDqQBRghDA=</HashCode>
+      <FileName>RelationControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.VA_AnalyseStartup" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>VA_AnalyseStartup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.VAAnalyseModul" Collapsed="true">
+    <Position X="6" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>I0gAAChIwAQAoCRCBQRAIolEQACqIBAwgnAAhQQBhCA=</HashCode>
+      <FileName>VAAnalyseModul.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.Internal.AddInStartupObject" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAQAgAEAAAAAABBAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VA_Analysemodul.Properties.Resources" Collapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAREAAAAQAAAAADAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
