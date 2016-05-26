@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<title>Registrer endring på strekning</title>
+	<link rel="stylesheet" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+	<link rel="stylesheet" href="https://js.arcgis.com/3.16/dijit/themes/claro/claro.css">
+	<script type="text/javascript" src="FMEServer.js"></script>
+	<script src="https://js.arcgis.com/3.16/"></script>
+	<meta charset="utf-8" />
+	<style>
+    html, 
+    body, 
+    #myTableNode {
+      width:100%;
+      height:10%;
+      margin:0;
+      padding:0;
+    }
+    
+    #top, 
+    #bot {
+      margin: 0;
+      padding: 0;
+    }
+	#gridDiv {
+    height: 20em;
+	}
+  </style>
+
+  <script>
+	require([
+		"esri/layers/FeatureLayer",
+		"esri/dijit/FeatureTable",
+		"esri/tasks/query",
+		"esri/tasks/QueryTask",
+		"esri/request",
+		"esri/lang",
+		"dijit/registry",
+		"dojo/dom-style",
+		"dojo/Deferred",
+		"dojo/_base/lang",
+		"dojox/grid/DataGrid",
+		"dojo/data/ItemFileWriteStore",
+		"dijit/form/RadioButton",
+		"dijit/form/TextBox",
+		"dojo/dom",
+		"dojo/parser",
+		"dojo/ready"
+	], function (FeatureLayer, FeatureTable, Query, QueryTask, esriRequest, esriLang,registry, domStyle, Deferred, lang, DataGrid, ItemFileWriteStore,RadioButton,TextBox, dom, parser, ready) {
+		var myTable, tmpFeatureLayer, store, valgt = "Kum", endringsIndekser = [], innlogget = false;
+		var url = "https://arcgistest.adm.vav.oslo.kommune.no:6443/arcgis/rest/services/MeldFeil/KumFeil/FeatureServer/0";
+		parser.parse();
+		
+		ready(function(){
+		
+			/* Legger til et featurelayer for bruk i query-funksjonene */
+			function leggTilFeatureLayer(){
+				featureLayer = new FeatureLayer(url, {
+					mode: FeatureLayer.MODE_ONDEMAND,
+					outFields: ["*"],
+					visible: false,
+					id: "fLayer"
+				});
+				dojo.connect(featureLayer, 'onLoad', function(){
+					console.log("loaded");
+				});
+				console.log("Lagt til featureLayer");
+			}
+					
+			/* Konfigurerer en sporring mot url-en og henter info om objektet*/
+			function queryLyer(){
+				var queryTask = new QueryTask(url);
+			
+				var query = new Query();
+				query.returnGeometry = false;
+				query.outFields = ["*"];
+				query.where = "PSID = 111204";
+				queryTask.execute(query, queryResults);
+			}
+			
+			/* Mottar resultat fra sporring og populerer tabellen*/
+			function queryResults(results){
+				console.log("results")
+				var items = [];
+				for (var i=0, il = results.features.length; i < il; i++){
+					var featureAttributes = results.features[i].attributes;
+					items.push(featureAttributes);
+				}
+				var data = {
+                    identifier: "PSID", // This field needs to have unique values
+                    label: "PSID", // NAme field for display. Not pertinent to a grid
+					items: items
+                };
+				
+				setupDatagrid(data, items);
+			}
+			
+			/* Finner domenelisten til feltet som er valgt */
+			function finnDomains(feltet){
+				var domain = featureLayer.getDomain(feltet);
+				if(domain != null){
+					codedValues = domain;
+					for(var i = 0; i < domain.codedValues.length; i++){
+						var codedValue = domain.codedValues[i];
+					}
+				
+				var verdier = hentDomeneverdier(domain);
+				return verdier;
+				}
+			}
+		
+			/* Henter domeneverdier fra domenelisten*/
+			function hentDomeneverdier(domain){
+				var verdiValuePairs = [];			
+					for (var i = 0; i < domain.codedValues.length; i++){
+						var codedValue = domain.codedValues[i];
+						verdiValuePairs.push({
+							label: codedValue.name,
+							value: codedValue.name,
+							selected: false
+						});
+					}
+				return verdiValuePairs;
+			}
+			
+			/* Henter mulige alternativer for verdi i nedtrekksmeny*/
+			function getOptions(felt){
+				var verdi = finnDomains(felt);
+				var items = [];
+				if(verdi != null){
+					for(var i=0, il = verdi.length; i < il; i++){
+						items.push(verdi[i].value);
+					}
+				}
+				
+				return items;
+			}
+			/* */
+			function testEdit(value, inRowIndex, inFieldIndex){
+				if(store.isDirty()){
+					endringsIndekser.push({field: inFieldIndex, newValue: value});
+					console.log("Dirty");
+				}
+				store.save();
+			}
+			
+			/* Oppretter og konfigurerer datagrid-elementet */
+			function setupDatagrid(data, items){				
+                store = new ItemFileWriteStore({data: data});
+				
+                var layout;
+				if(valgt == "Kum"){
+					layout = [
+						{name: 'PSID', field: 'PSID', width: '100px'},
+						{name: 'Referanse', field: 'REFERENCE', width: '100px'},
+						{name: 'Refnr', field: 'REFNO', width: '50px'},
+						{name: 'Stasjon', field: 'STATION', width: '100px'},
+						{name: 'FCODE', field: 'FCODE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: getOptions("FCODE")},
+						{name: 'Funksjon', field: 'FUNC', width: '150px', editable: true, type: dojox.grid.cells.Select, options: getOptions("FUNC")},
+						{name: 'Type', field: 'TYPE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: getOptions("TYPE")},
+						{name: 'Eier', field: 'OWNER', width: '150px'},
+						{name: 'Aar', field: 'YEAR_CONSTR', width: '75px'},
+						{name: 'Topplokk Z', field: 'Z', width: '75px'},
+						{name: 'Risiko', field: 'RISC', width: '175px', editable: true, type: dojox.grid.cells.Select, options: getOptions("RISC")},
+						{name: 'Plassering', field: 'LOCATION', width: '150px', editable: true, type: dojox.grid.cells.Select, options: getOptions("LOCATION")},
+						{name: 'Adkomst', field: 'ACCESSIBLE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: ["test", "test2"]},
+						{name: 'Kumform', field: 'OBJSHAPE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: ["test", "test2"]},
+						{name: 'Byggtype', field: 'BUILDSTYLE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: ["test", "test2"]},
+						{name: 'Kjegle', field: 'CONE', width: '150px', editable: true, type: dojox.grid.cells.Select, options: ["test", "test2"]},
+						{name: 'Mellomdekk', field: 'MIDDLEDECK', width: '150px', editable: true, type: dojox.grid.cells.Select, options: getOptions("MIDDLEDECK")}
+					];
+				}
+				else if (valgt == "Utstyr"){
+					layout = setupUtstyrLayout();
+				}
+				
+                if(!dojo.byId("grid")){
+					var grid = new DataGrid({
+						id: 'grid',
+						store: store,
+						structure: layout,
+						onApplyCellEdit: testEdit
+					});
+					
+					grid.placeAt("gridDiv");
+					grid.startup();
+				}
+				else{
+					registry.byId("grid").setStructure(layout);
+					registry.byId("grid").setStore(store);
+				}
+            }
+			/* Lager en array med oppsett for hvordan layout til utsyr skal se ut */
+			function setupUtstyrLayout(){
+				var layout = [
+                    {name: 'PSID', field: 'PSID', width: '100px'},
+					{name: 'Utstyrstype', field: 'TYPE', width: '100px', editable: true, type: dojox.grid.cells.Select, options: getOptions("TYPE")},
+					{name: 'Dimensjon', field: 'DIM', width: '100px', editable: true},
+					{name: 'Material', field: 'MATERIAL', width: '100px', editable: true},
+					{name: 'Aar', field: 'YEAR_CONSTR', width: '150px', editable: true}
+				];
+				return layout;
+			}
+			/*Sjekker eventuell eksisterende cookie*/
+			function checkCookie(){
+				if(innlogget == false){
+					FMEServer.init({
+					server: "https://fme-test.adm.vav.oslo.kommune.no",
+					token: "40cda64b9e5b82e4fcebc448515dd8ad206ece45"
+					});
+					var username = document.getElementById("user").value;
+					var password = document.getElementById("pwd").value;
+				
+					//FMEServer.generateToken(username, password, 1, "day", setCookie);
+					FMEServer.lookupToken(username, password, setCookie);
+					innlogget = true;
+					document.getElementById("infoBoks").innerHTML = "<h2>Du er pålogget.</h2>";
+				}
+				else{
+					token = document.getElementById("token_storage").value;
+				}
+			}
+			
+			/* Henter info om cookie*/
+			function getCookie(cname){
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length,c.length);
+					}
+				}
+				return "";
+				
+			}
+			
+			/*Genererer en ny cookie, hvis det ikke finnes fra før*/
+			function setCookie(token){
+				token = token.serviceResponse.token;
+				if(token.indexOf("FMEServerException" ) == -1){
+					var d = new Date();
+					d = new Date(d.setHours(d.getHours() + 1)).toString();
+					var expires = "expires="+d.toString();
+					
+					var guestToken;
+					if(typeof token == 'string'){
+						guestToken = token.trim();
+						alert("string: "+guestToken)
+					}
+					else{
+						guestToken = "<pre>"+JSON.stringify(token, undefined, 4)+"</pre>";
+						alert("ikke string: "+guestToken);
+					}
+					document.cookie = "token="+guestToken + "; "+expires;
+					document.getElementById("token_storage").value = guestToken;
+				}
+				else{
+					document.getElementById("infoBoks").innerHTML = "Noe feilet ved pålogging til FMEServer";
+				}
+			}
+			
+			function checkInnloggingCookie(){
+				var cookieToken = getCookie("token");
+				if(cookieToken != ""){
+					document.getElementById("infoBoks").innerHTML = "<h2>Du er logget inn</h2>";
+					innlogget = true;
+					return cookieToken;
+				}
+				else{
+					document.getElementById("infoBoks").innerHTML = "<h2>Du må skrive brukernavn og passord før du trykker på knappen for innsending.</h2>";
+					innlogget = false;
+				}
+			}
+			
+			function processToken(token){
+				var guestToken;
+				if(typeof token == 'string'){
+					guestToken = token.trim();
+				}
+				else{
+					guestToken = "<pre>"+JSON.stringity(token, undefined, 4)+"</pre>";
+				}
+			}
+			
+			
+			leggTilFeatureLayer();
+			queryLyer();
+			token = checkInnloggingCookie();
+			
+			/*Registrerer change-event for radioknappen Kum*/
+			registry.byId("Kum").on("change", function(isChecked){
+				if(isChecked){
+					valgt = "Kum";
+					url = "https://arcgistest.adm.vav.oslo.kommune.no:6443/arcgis/rest/services/MeldFeil/KumFeil/FeatureServer/0";
+					leggTilFeatureLayer();
+					queryLyer();
+					
+					document.getElementById("leggTilUtstyr").style.visibility = false;
+				}
+			});
+			
+			/*Registrerer en change-event for radioknappen Utstyr*/
+			registry.byId("Utstyr").on("change", function(isChecked){
+				if(isChecked){
+					valgt = "Utstyr";
+					url = "http://gis2.adm.vav.oslo.kommune.no/arcgis/rest/services/VA/Kumutstyr/MapServer/0";
+					leggTilFeatureLayer();
+					queryLyer();
+				}
+			});
+			
+			/*Registrerer en click-event for knappen LeggTilUtstyr*/
+			registry.byId("leggTilUtstyr").on("click", function(){
+				registry.byId("grid").store.newItem({PSID:"12345"});
+			});
+			
+			/*Registrerer en click-event for knappen FjernUtstyr*/
+			registry.byId("fjernUtstyr").on("click", function(){
+				var items = registry.byId("grid").selection.getSelected();
+				if(items.length){
+					dojo.forEach(items, function(selectedItem){
+						if(selectedItem != null){
+							var test = itemToJSON(store, selectedItem);
+							console.log(test);
+							//store.deleteItem(selectedItem);
+						}//end if
+					}); // end forEach
+				}//end if
+			});
+			
+			/*Registrerer en click-event for knappen SendInn*/
+			registry.byId("loggInn").on("click", function(){
+				checkCookie();
+			});
+			
+			/*Registrerer en click-event for knappen SendInn*/
+			registry.byId("sendInn").on("click", function(){
+				//checkCookie();
+				//create FME-object
+				FMEServer.init({
+					server: "https://fme-test.adm.vav.oslo.kommune.no",
+					token: token
+				});
+							
+				var params = {"publishedParameters" : []};
+				var publishedParameters = params.publishedParameters;
+				var repository = "MeldOmFeil", workspace;
+				
+				if(valgt == "Kum"){
+					workspace = "Kumoppdatering.fmw";
+					publishedParameters.push({name: "SID", "value":"111204"})
+					for(var i=0;i < endringsIndekser.length; i++){
+						var o = endringsIndekser[i];
+						console.log(o.field+": "+o.newValue);
+						
+						switch(o.field){
+							case "TYPE":
+								publishedParameters.push({name: "Type", "value": o.newValue});
+								break;
+							case "RISC":
+								publishedParameters.push({name: "Risiko", "value": o.newValue});
+								break;
+							case "LOCATION":
+								publishedParameters.push({name: "Plassering", "value": o.newValue});
+								break;
+							case "ACCESSIBLE":
+								publishedParameters.push({name: "Adkomst", "value": o.newValue});
+								break;
+							case "OBJSHAPE":
+								publishedParameters.push({name: "Kumform", "value": o.newValue});
+								break;
+							case "BUILDSTYLE":
+								publishedParameters.push({name: "Byggtype", "value": o.newValue});
+								break;
+						}
+					}
+				}
+				else{
+					workspace = " Utstyrsoppdatering.fmw";
+								
+					for(var i=0;i < endringsIndekser.length; i++){
+						var o = endringsIndekser[i];
+						console.log(o.field+": "+o.newValue);
+						
+						switch(o.field){
+							case "TYPE":
+								publishedParameters.push({name: "Utstyrstype", "value": o.newValue});
+								break;
+							case "RISC":
+								publishedParameters.push({name: "Dimensjon", "value": o.newValue});
+								break;
+							case "LOCATION":
+								publishedParameters.push({name: "Material", "value": o.newValue});
+								break;
+							case "ACCESSIBLE":
+								publishedParameters.push({name: "Aar", "value": o.newValue});
+								break;
+						}
+					}
+				}
+				document.getElementById("infoBoks").innerHTML="<h3>Arbeider med registrering:</h3>";
+				
+				//submit syncjob to FME Server
+				FMEServer.submitSyncJob(repository, workspace, params, function(evt){
+					document.getElementById("infoBoks").innerHTML="<h3>Resultatobjekt:</h3><pre>"+JSON.stringify(evt,undefined,4)+"</pre>";
+				});
+			});
+		});
+	});
+  </script>
+ </head>
+ <body class="claro">
+ <div id="info">Dette viser eksempel paa redigering av kummer, hvor man skal kunne redigere flere kolonner/egenskaper samtidig. <br></div>
+ <div id="radiobuttons"> 
+ <input type="radio" data-dojo-type="dijit/form/RadioButton" name="KumValg" id="Kum" checked value="Kum"/> <label for="Kum">Kum</label> <br />
+ <input type="radio" data-dojo-type="dijit/form/RadioButton" name="KumValg" id="Utstyr" value="Utstyr"/> <label for="Utstyr">Utstyr</label> <br />
+ </div>
+ <br>
+ <div id="gridDiv"></div><p>
+ <div data-dojo-type="dijit/form/TextBox" id="user" value="Brukernavn"></div>
+ <div data-dojo-type="dijit/form/TextBox" id="pwd" type="password" value="Passord"></div>
+ <p>
+ <div data-dojo-type="dijit.form.Button" id="leggTilUtstyr">Legg til utstyr</div>
+ <div data-dojo-type="dijit.form.Button" id="fjernUtstyr">Fjern utstyr</div>
+ <div data-dojo-type="dijit.form.Button" id="loggInn">Logg inn</div>
+ <div data-dojo-type="dijit.form.Button" id="sendInn">Send inn</div>
+ <p>
+ <div id="infoBoks"></div>
+ <input id="token_storage" type="hidden" value=""/>
+ <div id="resultat"></div>
+ </body>
+</html>
